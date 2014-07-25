@@ -1,3 +1,6 @@
+#Travis build status
+TODO
+
 #What is it?
 It's a simple virtual keyboard for Go that uses /dev/uinput to inject key events, as if from a real keyboard.
 
