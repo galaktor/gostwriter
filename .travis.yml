@@ -7,7 +7,7 @@ go:
 
 before_install:
   - sudo apt-get update -y
-  - sudo apt-get install docker -y
+  - sudo apt-get install docker.io -y
   - docker version
 
 install:
