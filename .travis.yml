@@ -8,6 +8,7 @@ go:
 before_install:
   - sudo apt-get update -y
   - sudo apt-get install docker -y
+  - docker version
 
 install:
   - go get -d -v ./...
