@@ -6,6 +6,7 @@ go:
   - tip
 
 install:
-  - modprobe uinput && lsmod | grep uinput
+  - sudo modprobe uinput
+  - lsmod
   - chmod +0666 /dev/uinput
   - go get -d -v ./...
