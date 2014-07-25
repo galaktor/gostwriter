@@ -5,8 +5,11 @@ go:
   - 1.3
   - tip
 
-install:
+before_install:
+  - sudo apt-get update
   - sudo modprobe uinput
   - lsmod
   - chmod +0666 /dev/uinput
+
+install:
   - go get -d -v ./...
