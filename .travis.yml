@@ -6,12 +6,8 @@ go:
   - tip
 
 before_install:
-  - lsmod
-  - sudo apt-get update
-  - sudo apt-get install kernel
-  - sudo modprobe uinput
-  - lsmod
-  - chmod +0666 /dev/uinput
+  - sudo apt-get update -y
+  - sudo apt-get install docker -y
 
 install:
   - go get -d -v ./...
