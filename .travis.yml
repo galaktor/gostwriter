@@ -7,6 +7,8 @@ go:
 
 before_install:
   - sudo apt-get update
+  - sudo apt-get install kernel
+  - lsmod
   - sudo modprobe uinput
   - lsmod
   - chmod +0666 /dev/uinput
