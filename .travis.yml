@@ -8,6 +8,7 @@ go:
 before_install:
   - sudo apt-get update -y && sudo apt-get install curl
   - curl -s https://get.docker.io/ubuntu/ | sudo sh
+  - sudo docker -d
   - sudo docker version
 
 install:
