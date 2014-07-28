@@ -1,0 +1,6 @@
+*~
+*#
+*.#*
+*_test[0-9]*
+.gitignore
+*.test
