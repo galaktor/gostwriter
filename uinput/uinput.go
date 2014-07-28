@@ -12,11 +12,21 @@ import "C"
 
 import (
 	"encoding/binary"
+	"errors"
+	"fmt"
 	"os"
 	"syscall"
 )
 
 type KeyCode C.__u16
+
+const (
+	KEY_C KeyCode = C.KEY_C
+	KEY_D         = C.KEY_D
+	KEY_ENTER    = C.KEY_ENTER
+)
+
+const MAX_NAME_SIZE = 80
 
 type UinputDevice interface {
 	Press(k KeyCode) error
@@ -28,16 +38,19 @@ type UinputDevice interface {
 
 type U struct {
 	f *os.File
+	registeredKeys map[KeyCode]bool
 }
 
-func New(deviceName string, keys ...KeyCode) (UinputDevice, error) {
+
+
+func New(devicePath, deviceName string, keys ...KeyCode) (UinputDevice, error) {
 	/* open device */
-	f, err := openDeviceFile(deviceName)
+	f, err := openDeviceFile(devicePath)
 	if err != nil {
 		return nil, err
 	}
 
-	dev := &U{f}
+	dev := &U{f, make(map[KeyCode]bool,len(keys))}
 
 	/* set event types */
 	err = dev.registerEventTypes()
@@ -54,7 +67,7 @@ func New(deviceName string, keys ...KeyCode) (UinputDevice, error) {
 	}
 
 	/* create device */
-	err = dev.create()
+	err = dev.create(deviceName)
 	if err != nil {
 		return nil, err
 	}
@@ -62,21 +75,25 @@ func New(deviceName string, keys ...KeyCode) (UinputDevice, error) {
 	return dev, nil
 }
 
-func openDeviceFile(deviceName string) (*os.File, error) {
-	f, err := os.OpenFile(deviceName, os.O_WRONLY|syscall.O_NONBLOCK, os.ModeDevice)
+func openDeviceFile(devicePath string) (*os.File, error) {
+	f, err := os.OpenFile(devicePath, os.O_WRONLY|syscall.O_NONBLOCK, os.ModeDevice)
 	if err != nil {
 		return nil, err
 	}
 	return f, nil
 }
 
-// TODO: pass in device metadata, name etc
-func (u *U) create() error {
+func (u *U) create(deviceName string) error {
+	nameB := []byte(deviceName)
+	if len(nameB) > MAX_NAME_SIZE {
+		msg := fmt.Sprintf("device name '%v' too long (%v bytes); cannot be longer than %v bytes", deviceName, len(nameB), MAX_NAME_SIZE)
+		return errors.New(msg)
+	}
+
 	dev := C.struct_uinput_user_dev{}
-	dev.name[0] = C.char('T')
-	dev.name[1] = C.char('E')
-	dev.name[2] = C.char('S')
-	dev.name[3] = C.char('T')
+	for i, c := range nameB {
+		dev.name[i] = C.char(c)
+	}
 	dev.id.bustype = C.BUS_USB
 	dev.id.vendor = 0x1234
 	dev.id.product = 0xfedc
@@ -95,13 +112,27 @@ func (u *U) create() error {
 	return nil
 }
 
-// press then releases in one action
 func (u *U) Push(k KeyCode) error {
+	err := u.Press(k)
+	if err != nil {
+		return err
+	}
+
+	err = u.Release(k)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
 // TODO: consider re-using structs? on stack anyway, so no worries I think
 func (u *U) Press(k KeyCode) error {
+	if !u.isRegistered(k) {
+		msg := fmt.Sprintf("cannot press key that wasn't registered. key code: %v", k)
+		return errors.New(msg)
+	}
+
 	evt := C.struct_input_event{}
 	evt._type = C.EV_KEY
 	evt.code = C.__u16(k)
@@ -111,6 +142,11 @@ func (u *U) Press(k KeyCode) error {
 }
 
 func (u *U) Release(k KeyCode) error {
+	if !u.isRegistered(k) {
+		msg := fmt.Sprintf("cannot release key that wasn't registered. key code: %v", k)
+		return errors.New(msg)
+	}
+
 	evt := C.struct_input_event{}
 	evt._type = C.EV_KEY
 	evt.code = C.__u16(k)
@@ -150,7 +186,14 @@ func (u *U) registerKey(k KeyCode) error {
 		return errno
 	}
 
+	u.registeredKeys[k] = true
+
 	return nil
+}
+
+func (u *U) isRegistered(k KeyCode) bool {
+	_, present := u.registeredKeys[k]
+	return present
 }
 
 func (u *U) Destroy() error {
