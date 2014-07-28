@@ -18,14 +18,6 @@ import (
 	"syscall"
 )
 
-type KeyCode C.__u16
-
-const (
-	KEY_C KeyCode = C.KEY_C
-	KEY_D         = C.KEY_D
-	KEY_ENTER    = C.KEY_ENTER
-)
-
 const MAX_NAME_SIZE = 80
 
 type UinputDevice interface {
@@ -112,19 +104,7 @@ func (u *U) create(deviceName string) error {
 	return nil
 }
 
-func (u *U) Push(k KeyCode) error {
-	err := u.Press(k)
-	if err != nil {
-		return err
-	}
 
-	err = u.Release(k)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
 
 // TODO: consider re-using structs? on stack anyway, so no worries I think
 func (u *U) Press(k KeyCode) error {
