@@ -4,6 +4,8 @@
     Licensed under The GPL v3 License (see README and LICENSE files) */
 package gostwriter
 
+import "github.com/galaktor/gostwriter/uinput"
+
 type VirtualKeyboard struct {
 	device UinputDevice
 //	keys map[string]Key 
