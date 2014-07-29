@@ -20,7 +20,7 @@ import (
 
 const MAX_NAME_SIZE = 80
 
-type UinputDevice interface {
+type D interface {
 	Press(k KeyCode) error
 	Release(k KeyCode) error
 	Sync() error
@@ -45,7 +45,7 @@ func getAllCodes() [KEY_CNT]KeyCode {
 	return result
 }
 
-func New(devicePath, deviceName string, keys ...KeyCode) (UinputDevice, error) {
+func New(devicePath, deviceName string, keys ...KeyCode) (D, error) {
 	/* open device */
 	f, err := openDeviceFile(devicePath)
 	if err != nil {
