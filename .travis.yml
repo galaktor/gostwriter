@@ -6,7 +6,7 @@ go:
   - tip
 
 before_install:
-  - sudo apt-get update -y && sudo apt-get install curl grep gawk
+  - sudo apt-get update -y && sudo apt-get install curl grep gawk linux-headers-$(uname -r)
 
 install:
   - go get -d -v ./...
