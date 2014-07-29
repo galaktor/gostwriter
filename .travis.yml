@@ -6,7 +6,7 @@ go:
   - tip
 
 before_install:
-  - sudo apt-get update -y && sudo apt-get install curl grep awk
+  - sudo apt-get update -y && sudo apt-get install curl grep gawk
 
 install:
   - go get -d -v ./...
