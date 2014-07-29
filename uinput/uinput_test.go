@@ -54,6 +54,14 @@ func TestNew_DeviceNameLongerThan80Bytes_ReturnsError(t *testing.T) {
 	}
 }
 
+func TestNew_RegisterAlLCodes_NoErrors(t *testing.T) {
+	_, err := New(UINPUT_DEV_PATH, "abc", ALL_CODES[0:]...)
+	
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+}
+
 func TestPress_UnregisteredKey_ReturnsError(t *testing.T) {
 	d, err := New(UINPUT_DEV_PATH, "abc")
 	defer d.Destroy()
@@ -200,6 +208,28 @@ func TestPressThenRelease_MultipleRegisteredKeys_WritesThemKeyToStdIn(t *testing
 	}
 	
 
+	if actual != expected {
+		t.Errorf("expected '%v' but found '%v'", expected, actual)
+	}
+}
+
+func TestGetAllCodes_ReturnsKEY_CNT_Entries(t *testing.T) {
+	expected := int(KEY_CNT)
+	
+	keys := getAllCodes()
+
+	actual := len(keys)
+	if actual != expected {
+		t.Errorf("expected '%v' but found '%v'", expected, actual)
+	}
+}
+
+func TestAllCodes_ReturnsKEY_CNT_Entries(t *testing.T) {
+	expected := int(KEY_CNT)
+	
+	keys := ALL_CODES
+
+	actual := len(keys)
 	if actual != expected {
 		t.Errorf("expected '%v' but found '%v'", expected, actual)
 	}

@@ -30,10 +30,20 @@ type UinputDevice interface {
 
 type U struct {
 	f *os.File
+
+	// this is being a bit wasteful with memory, but ok for first shot
 	registeredKeys map[KeyCode]bool
 }
 
+var ALL_CODES [KEY_CNT]KeyCode = getAllCodes()
 
+func getAllCodes() [KEY_CNT]KeyCode {
+	result := [KEY_CNT]KeyCode{}
+	for i := 0; i < int(KEY_CNT); i++ {
+		result[i] = KeyCode(i)
+	}
+	return result
+}
 
 func New(devicePath, deviceName string, keys ...KeyCode) (UinputDevice, error) {
 	/* open device */
