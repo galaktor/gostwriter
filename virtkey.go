@@ -4,23 +4,24 @@
     Licensed under The GPL v3 License (see README and LICENSE files) */
 package gostwriter
 
-import "github.com/galaktor/gostwriter/uinput"
+import (
+	"github.com/galaktor/gostwriter/uinput"
+)
 
 type VirtualKeyboard struct {
-	device UinputDevice
-//	keys map[string]Key 
+	device uinput.D
+	//	keys map[string]Key
 }
 
-func New(devName string, keys ...Key) (*VirtualKeyboard, error) {
-	dev, err := Create(devName)
+/* register all codes for now */
+func New() (*VirtualKeyboard, error) {
+	dev, err := uinput.New("/dev/uinput", "gostwriter", uinput.ALL_CODES[0:]...)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	vk := &VirtualKeyboard{}
 	vk.device = dev
-	vk.register()
-	vk.defKeys()
 
-	return vk, nil	
+	return vk, nil
 }

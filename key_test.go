@@ -8,7 +8,7 @@ func TestPress_NotPressed_SendsPressAndSyncToUinputDevice(t *testing.T) {
 
 func TestPress_AlreadyPressed_SendsSyncToUinputDevice(t *testing.T) {
 	// sure about this??
-	t.Errof("todo")
+	t.Errorf("todo")
 }
 
 func TestRelease_NotPressed_SendsSyncToUinputDevice(t *testing.T) {
@@ -16,7 +16,7 @@ func TestRelease_NotPressed_SendsSyncToUinputDevice(t *testing.T) {
 }
 
 func TestRelease_Pressed_SendsReleaseAndSyncToUinputDevice(t *testing.T) {
-	t.Errof("todo")
+	t.Errorf("todo")
 }
 
 
