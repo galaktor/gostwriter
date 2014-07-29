@@ -13,7 +13,7 @@ install:
   
 script:
   - cd uinput
-  - ./get_keycodes.sh
+  - ./get_keycodes.sh /usr/include/linux/input.h
   - go build && go test -c
   - cd ..
   - go build
