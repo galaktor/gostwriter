@@ -6,10 +6,14 @@ go:
   - tip
 
 before_install:
-  - sudo apt-get update -y && sudo apt-get install curl
-  - curl -s https://get.docker.io/ubuntu/ | sudo sh
-  - sudo docker -d
-  - sudo docker version
+  - sudo apt-get update -y && sudo apt-get install curl grep awk
 
 install:
   - go get -d -v ./...
+  
+script:
+  - cd uinput
+  - ./get_keycodes.sh
+  - cd ..
+  - go build ./...
+  - go test -v -c ./...
