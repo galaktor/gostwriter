@@ -9,7 +9,9 @@ before_install:
   - sudo apt-get update -y && sudo apt-get install curl grep gawk
 
 install:
-  - ls /usr/include
+  - ls /usr/include/linux/
+  - ls /usr/include/linux/uapi
+  - cat /usr/include/linux/uapi/input.h
   - go get -d -v ./...
   
 script:
