@@ -1,15 +1,13 @@
 #/bin/bash
 
-curl -s https://raw.githubusercontent.com/torvalds/linux/master/include/uapi/linux/input.h
+inputh="/usr/include/linux/input.h"
 
-inputh="/tmp/input.h"
-
-if [[ $# -eq 0 ]]
+if [[ $# -ne 0 ]]
 then
-  sudo curl -s https://raw.githubusercontent.com/torvalds/linux/master/include/uapi/linux/input.h > $inputh
-else
-  sudo cp $1 $inputh
+  inputh=$1
 fi
+
+echo "using KEYS from input.h at: $inputh"
 
 cat ../COPYRIGHT > keycodes.go
 echo "" >> keycodes.go
