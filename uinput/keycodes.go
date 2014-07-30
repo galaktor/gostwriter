@@ -415,4 +415,15 @@ const (
 	KEY_MIN_INTERESTING  = KeyCode(C.KEY_MIN_INTERESTING)  /* KEY_MUTE */
 	KEY_MAX              = KeyCode(C.KEY_MAX)              /* 0x2ff */
 	KEY_CNT              = KeyCode(C.KEY_CNT)              /* (KEY_MAX+1) */
+
 )
+
+var ALL_CODES [KEY_CNT]KeyCode = getAllCodes()
+
+func getAllCodes() [KEY_CNT]KeyCode {
+	result := [KEY_CNT]KeyCode{}
+	for i := 0; i < int(KEY_CNT); i++ {
+		result[i] = KeyCode(i)
+	}
+	return result
+}

@@ -35,16 +35,6 @@ type U struct {
 	registeredKeys map[KeyCode]bool
 }
 
-var ALL_CODES [KEY_CNT]KeyCode = getAllCodes()
-
-func getAllCodes() [KEY_CNT]KeyCode {
-	result := [KEY_CNT]KeyCode{}
-	for i := 0; i < int(KEY_CNT); i++ {
-		result[i] = KeyCode(i)
-	}
-	return result
-}
-
 func New(devicePath, deviceName string, keys ...KeyCode) (D, error) {
 	/* open device */
 	f, err := openDeviceFile(devicePath)
