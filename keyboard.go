@@ -8,19 +8,19 @@ import (
 	"github.com/galaktor/gostwriter/uinput"
 )
 
-type VirtualKeyboard struct {
+type Keyboard struct {
 	device uinput.D
 	//	keys map[string]Key
 }
 
 /* register all codes for now */
-func New() (*VirtualKeyboard, error) {
+func New() (*Keyboard, error) {
 	dev, err := uinput.New("/dev/uinput", "gostwriter", uinput.ALL_CODES[0:]...)
 	if err != nil {
 		return nil, err
 	}
 
-	vk := &VirtualKeyboard{}
+	vk := &Keyboard{}
 	vk.device = dev
 
 	return vk, nil
