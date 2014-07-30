@@ -35,6 +35,8 @@ type U struct {
 	registeredKeys map[KeyCode]bool
 }
 
+type Factory func(devicePath, deviceName string, keys ...KeyCode) (D, error)
+
 func New(devicePath, deviceName string, keys ...KeyCode) (D, error) {
 	/* open device */
 	f, err := openDeviceFile(devicePath)
