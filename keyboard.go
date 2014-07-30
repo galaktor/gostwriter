@@ -13,9 +13,16 @@ type Keyboard struct {
 	//	keys map[string]Key
 }
 
+/* replace this in tests to inject mock UinputDevice */
+var getUinput uinput.Factory = getUinputProper
+
+func getUinputProper(devicePath, deviceName string, keys ...uinput.KeyCode) (uinput.D, error) {
+	return uinput.New(devicePath, deviceName, keys...)
+}
+
 /* register all codes for now */
-func New() (*Keyboard, error) {
-	dev, err := uinput.New("/dev/uinput", "gostwriter", uinput.ALL_CODES[0:]...)
+func New(name string) (*Keyboard, error) {
+	dev, err := getUinput("/dev/uinput", name, uinput.ALL_CODES[0:]...)
 	if err != nil {
 		return nil, err
 	}
@@ -25,3 +32,10 @@ func New() (*Keyboard, error) {
 
 	return vk, nil
 }
+
+
+
+
+
+
+
