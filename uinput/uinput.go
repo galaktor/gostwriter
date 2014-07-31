@@ -17,14 +17,14 @@ import (
 	"os"
 	"syscall"
 
-	"github.com/galaktor/gostwriter/input"
+	"github.com/galaktor/gostwriter/key"
 )
 
 const MAX_NAME_SIZE = 80
 
 type D interface {
-	Press(k input.KeyCode) error
-	Release(k input.KeyCode) error
+	Press(k key.Code) error
+	Release(k key.Code) error
 	Sync() error
 
 	Destroy() error
@@ -34,19 +34,19 @@ type U struct {
 	f *os.File
 
 	// this is being a bit wasteful with memory, but ok for first shot
-	registeredKeys map[input.KeyCode]bool
+	registeredKeys map[key.Code]bool
 }
 
-type Factory func(devicePath, deviceName string, keys ...input.KeyCode) (D, error)
+type Factory func(devicePath, deviceName string, keys ...key.Code) (D, error)
 
-func New(devicePath, deviceName string, keys ...input.KeyCode) (D, error) {
+func New(devicePath, deviceName string, keys ...key.Code) (D, error) {
 	/* open device */
 	f, err := openDeviceFile(devicePath)
 	if err != nil {
 		return nil, err
 	}
 
-	dev := &U{f, make(map[input.KeyCode]bool,len(keys))}
+	dev := &U{f, make(map[key.Code]bool,len(keys))}
 
 	/* set event types */
 	err = dev.registerEventTypes()
@@ -111,7 +111,7 @@ func (u *U) create(deviceName string) error {
 
 
 // TODO: consider re-using structs? on stack anyway, so no worries I think
-func (u *U) Press(k input.KeyCode) error {
+func (u *U) Press(k key.Code) error {
 	if !u.isRegistered(k) {
 		msg := fmt.Sprintf("cannot press key that wasn't registered. key code: %v", k)
 		return errors.New(msg)
@@ -125,7 +125,7 @@ func (u *U) Press(k input.KeyCode) error {
 	return binary.Write(u.f, binary.LittleEndian, &evt)
 }
 
-func (u *U) Release(k input.KeyCode) error {
+func (u *U) Release(k key.Code) error {
 	if !u.isRegistered(k) {
 		msg := fmt.Sprintf("cannot release key that wasn't registered. key code: %v", k)
 		return errors.New(msg)
@@ -164,7 +164,7 @@ func (u *U) registerEventTypes() error {
 	return nil
 }
 
-func (u *U) registerKey(k input.KeyCode) error {
+func (u *U) registerKey(k key.Code) error {
 	_, _, errno := syscall.Syscall(syscall.SYS_IOCTL, uintptr(u.f.Fd()), uintptr(C.UI_SET_KEYBIT), uintptr(k))
 	if errno != 0 {
 		return errno
@@ -175,7 +175,7 @@ func (u *U) registerKey(k input.KeyCode) error {
 	return nil
 }
 
-func (u *U) isRegistered(k input.KeyCode) bool {
+func (u *U) isRegistered(k key.Code) bool {
 	_, present := u.registeredKeys[k]
 	return present
 }

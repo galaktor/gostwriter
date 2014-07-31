@@ -5,17 +5,17 @@
 package gostwriter
 
 import(
-	"github.com/galaktor/gostwriter/input"
+	"github.com/galaktor/gostwriter/key"
 	"github.com/galaktor/gostwriter/uinput"
 )
 
 type K struct {
-	code input.KeyCode
+	code key.Code
 	dev uinput.D // should a key go to uinput directly, or should the keyboard?
 	isPressed bool
 }
 
-func newKey(k input.KeyCode) (*K) {
+func newKey(k key.Code) (*K) {
 	return &K{k,nil,false}
 }
 

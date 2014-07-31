@@ -7,7 +7,7 @@ package gostwriter
 import(
 	"testing"
 
-	"github.com/galaktor/gostwriter/input"
+	"github.com/galaktor/gostwriter/key"
 	"github.com/galaktor/gostwriter/uinput"
 )
 
@@ -62,7 +62,7 @@ func TestNew_UinputDevicePath_IsDevUinput(t *testing.T) {
 }
 
 func TestNew_UinputDeviceKeyCodes_IsGivenAllCodes(t *testing.T) {
-	expected := input.ALL_CODES[0:]
+	expected := key.ALL_CODES[0:]
 	fake := &uinput.Fake{}
 	getUinput = fake.New
 
@@ -77,6 +77,7 @@ func TestNew_UinputDeviceKeyCodes_IsGivenAllCodes(t *testing.T) {
 		t.Errorf("expected '%v' but found '%v'", expected, actual)
 	}
 }
+
 /*
 func TestGet_DefinedKey_ReturnsThatKey(t *testing.T) {
 	fake := &uinput.Fake{}
@@ -89,9 +90,14 @@ func TestGet_DefinedKey_ReturnsThatKey(t *testing.T) {
 	}
 
 	actual := k.Get(input.KEY_C)
+
 	if actual.KeyCode != 
+
+
+		kb.Press(
 }
 */
+
 func TestGet_UndefinedKey_ReturnsError(t *testing.T) {
 	t.Error("todo")
 }
@@ -101,7 +107,7 @@ func TestDestroy_Always_DestroysUinputDevice(t *testing.T) {
 }
 
 
-func AreEqual(a, b []input.KeyCode) bool {
+func AreEqual(a, b []key.Code) bool {
 	if len(a) != len(b) {
         return false
 	}

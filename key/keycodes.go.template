@@ -2,25 +2,25 @@
     Author email:  <galaktor@gmx.de>
     Project home:  <https://github.com/galaktor/gostwriter>
     Licensed under The GPL v3 License (see README and LICENSE files) */
-package input
+package key
 
 /*
   #include <linux/input.h>
 */
 import "C"
 
-type KeyCode C.__u16
+type Code C.__u16
 
 const (
       /*KEYCODES*/
 )
 
-var ALL_CODES [KEY_CNT]KeyCode = getAllCodes()
+var ALL_CODES [KEY_CNT]Code = getAllCodes()
 
-func getAllCodes() [KEY_CNT]KeyCode {
-	result := [KEY_CNT]KeyCode{}
+func getAllCodes() [KEY_CNT]Code {
+	result := [KEY_CNT]Code{}
 	for i := 0; i < int(KEY_CNT); i++ {
-		result[i] = KeyCode(i)
+		result[i] = Code(i)
 	}
 	return result
 }
