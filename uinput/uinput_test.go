@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"testing"
 	"time"
+
+	"github.com/galaktor/gostwriter/input"
 )
 
 /***  NOTE ON INTEGRATION TESTS ***
@@ -55,7 +57,7 @@ func TestNew_DeviceNameLongerThan80Bytes_ReturnsError(t *testing.T) {
 }
 
 func TestNew_RegisterAlLCodes_NoErrors(t *testing.T) {
-	_, err := New(UINPUT_DEV_PATH, "abc", ALL_CODES[0:]...)
+	_, err := New(UINPUT_DEV_PATH, "abc", input.ALL_CODES[0:]...)
 	
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)
@@ -70,7 +72,7 @@ func TestPress_UnregisteredKey_ReturnsError(t *testing.T) {
 		t.Errorf("unexpected error: %v", err)
 	}
 
-	err = d.Press(KEY_C)
+	err = d.Press(input.KEY_C)
 
 	if err == nil {
 		t.Error("expected error, but found nil")
@@ -85,7 +87,7 @@ func TestRelease_UnregisteredKey_ReturnsError(t *testing.T) {
 		t.Errorf("unexpected error: %v", err)
 	}
 
-	err = d.Release(KEY_C)
+	err = d.Release(input.KEY_C)
 
 	if err == nil {
 		t.Error("expected error, but found nil")
@@ -94,7 +96,7 @@ func TestRelease_UnregisteredKey_ReturnsError(t *testing.T) {
 
 func TestPressThenRelease_RegisteredKey_WritesThatKeyToStdIn(t *testing.T) {
 	expected := "c"
-	d, err := New(UINPUT_DEV_PATH, "abc", KEY_C, KEY_ENTER)
+	d, err := New(UINPUT_DEV_PATH, "abc", input.KEY_C, input.KEY_ENTER)
 	defer d.Destroy()
 
 	if err != nil {
@@ -109,7 +111,7 @@ func TestPressThenRelease_RegisteredKey_WritesThatKeyToStdIn(t *testing.T) {
 	}()
 
 	go func() {
-		var k KeyCode = KEY_C
+		k := input.KEY_C
 		for {
 			<-time.After(time.Second)
 			t.Logf("injecting key: %v", k)
@@ -122,11 +124,11 @@ func TestPressThenRelease_RegisteredKey_WritesThatKeyToStdIn(t *testing.T) {
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			err = d.Press(KEY_ENTER)
+			err = d.Press(input.KEY_ENTER)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			err = d.Release(KEY_ENTER)
+			err = d.Release(input.KEY_ENTER)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
@@ -151,7 +153,7 @@ func TestPressThenRelease_RegisteredKey_WritesThatKeyToStdIn(t *testing.T) {
 
 func TestPressThenRelease_MultipleRegisteredKeys_WritesThemKeyToStdIn(t *testing.T) {
 	expected := "cd"
-	d, err := New(UINPUT_DEV_PATH, "abc", KEY_C, KEY_D, KEY_ENTER)
+	d, err := New(UINPUT_DEV_PATH, "abc", input.KEY_C, input.KEY_D, input.KEY_ENTER)
 	defer d.Destroy()
 
 	if err != nil {
@@ -168,29 +170,29 @@ func TestPressThenRelease_MultipleRegisteredKeys_WritesThemKeyToStdIn(t *testing
 	go func() {
 		for {
 			<-time.After(time.Second)
-			t.Logf("injecting keys: %v and %v", KEY_C, KEY_D)
+			t.Logf("injecting keys: %v and %v", input.KEY_C, input.KEY_D)
 
-			err = d.Press(KEY_C)
+			err = d.Press(input.KEY_C)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			err = d.Release(KEY_C)
+			err = d.Release(input.KEY_C)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			err = d.Press(KEY_D)
+			err = d.Press(input.KEY_D)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			err = d.Release(KEY_D)
+			err = d.Release(input.KEY_D)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			err = d.Press(KEY_ENTER)
+			err = d.Press(input.KEY_ENTER)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			err = d.Release(KEY_ENTER)
+			err = d.Release(input.KEY_ENTER)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
@@ -208,28 +210,6 @@ func TestPressThenRelease_MultipleRegisteredKeys_WritesThemKeyToStdIn(t *testing
 	}
 	
 
-	if actual != expected {
-		t.Errorf("expected '%v' but found '%v'", expected, actual)
-	}
-}
-
-func TestGetAllCodes_ReturnsKEY_CNT_Entries(t *testing.T) {
-	expected := int(KEY_CNT)
-	
-	keys := getAllCodes()
-
-	actual := len(keys)
-	if actual != expected {
-		t.Errorf("expected '%v' but found '%v'", expected, actual)
-	}
-}
-
-func TestAllCodes_ReturnsKEY_CNT_Entries(t *testing.T) {
-	expected := int(KEY_CNT)
-	
-	keys := ALL_CODES
-
-	actual := len(keys)
 	if actual != expected {
 		t.Errorf("expected '%v' but found '%v'", expected, actual)
 	}

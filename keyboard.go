@@ -5,6 +5,7 @@
 package gostwriter
 
 import (
+	"github.com/galaktor/gostwriter/input"
 	"github.com/galaktor/gostwriter/uinput"
 )
 
@@ -13,16 +14,16 @@ type Keyboard struct {
 	//	keys map[string]Key
 }
 
-/* replace this in tests to inject mock UinputDevice */
+/* replace this in tests to inject fake UinputDevice */
 var getUinput uinput.Factory = getUinputProper
 
-func getUinputProper(devicePath, deviceName string, keys ...uinput.KeyCode) (uinput.D, error) {
+func getUinputProper(devicePath, deviceName string, keys ...input.KeyCode) (uinput.D, error) {
 	return uinput.New(devicePath, deviceName, keys...)
 }
 
 /* register all codes for now */
 func New(name string) (*Keyboard, error) {
-	dev, err := getUinput("/dev/uinput", name, uinput.ALL_CODES[0:]...)
+	dev, err := getUinput("/dev/uinput", name, input.ALL_CODES[0:]...)
 	if err != nil {
 		return nil, err
 	}
