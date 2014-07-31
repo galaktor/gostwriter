@@ -72,7 +72,7 @@ func TestPress_UnregisteredKey_ReturnsError(t *testing.T) {
 		t.Errorf("unexpected error: %v", err)
 	}
 
-	err = d.Press(key.KEY_C)
+	err = d.Press(key.CODE_C)
 
 	if err == nil {
 		t.Error("expected error, but found nil")
@@ -87,7 +87,7 @@ func TestRelease_UnregisteredKey_ReturnsError(t *testing.T) {
 		t.Errorf("unexpected error: %v", err)
 	}
 
-	err = d.Release(key.KEY_C)
+	err = d.Release(key.CODE_C)
 
 	if err == nil {
 		t.Error("expected error, but found nil")
@@ -96,7 +96,7 @@ func TestRelease_UnregisteredKey_ReturnsError(t *testing.T) {
 
 func TestPressThenRelease_RegisteredKey_WritesThatKeyToStdIn(t *testing.T) {
 	expected := "c"
-	d, err := New(UINPUT_DEV_PATH, "abc", key.KEY_C, key.KEY_ENTER)
+	d, err := New(UINPUT_DEV_PATH, "abc", key.CODE_C, key.CODE_ENTER)
 	defer d.Destroy()
 
 	if err != nil {
@@ -111,7 +111,7 @@ func TestPressThenRelease_RegisteredKey_WritesThatKeyToStdIn(t *testing.T) {
 	}()
 
 	go func() {
-		k := key.KEY_C
+		k := key.CODE_C
 		for {
 			<-time.After(time.Second)
 			t.Logf("injecting key: %v", k)
@@ -124,11 +124,11 @@ func TestPressThenRelease_RegisteredKey_WritesThatKeyToStdIn(t *testing.T) {
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			err = d.Press(key.KEY_ENTER)
+			err = d.Press(key.CODE_ENTER)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			err = d.Release(key.KEY_ENTER)
+			err = d.Release(key.CODE_ENTER)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
@@ -153,7 +153,7 @@ func TestPressThenRelease_RegisteredKey_WritesThatKeyToStdIn(t *testing.T) {
 
 func TestPressThenRelease_MultipleRegisteredKeys_WritesThemKeyToStdIn(t *testing.T) {
 	expected := "cd"
-	d, err := New(UINPUT_DEV_PATH, "abc", key.KEY_C, key.KEY_D, key.KEY_ENTER)
+	d, err := New(UINPUT_DEV_PATH, "abc", key.CODE_C, key.CODE_D, key.CODE_ENTER)
 	defer d.Destroy()
 
 	if err != nil {
@@ -170,29 +170,29 @@ func TestPressThenRelease_MultipleRegisteredKeys_WritesThemKeyToStdIn(t *testing
 	go func() {
 		for {
 			<-time.After(time.Second)
-			t.Logf("injecting keys: %v and %v", key.KEY_C, key.KEY_D)
+			t.Logf("injecting keys: %v and %v", key.CODE_C, key.CODE_D)
 
-			err = d.Press(key.KEY_C)
+			err = d.Press(key.CODE_C)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			err = d.Release(key.KEY_C)
+			err = d.Release(key.CODE_C)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			err = d.Press(key.KEY_D)
+			err = d.Press(key.CODE_D)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			err = d.Release(key.KEY_D)
+			err = d.Release(key.CODE_D)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			err = d.Press(key.KEY_ENTER)
+			err = d.Press(key.CODE_ENTER)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			err = d.Release(key.KEY_ENTER)
+			err = d.Release(key.CODE_ENTER)
 			if err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}

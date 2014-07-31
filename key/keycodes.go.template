@@ -15,11 +15,11 @@ const (
       /*KEYCODES*/
 )
 
-var ALL_CODES [KEY_CNT]Code = getAllCodes()
+var ALL_CODES [CODE_CNT]Code = getAllCodes()
 
-func getAllCodes() [KEY_CNT]Code {
-	result := [KEY_CNT]Code{}
-	for i := 0; i < int(KEY_CNT); i++ {
+func getAllCodes() [CODE_CNT]Code {
+	result := [CODE_CNT]Code{}
+	for i := 0; i < int(CODE_CNT); i++ {
 		result[i] = Code(i)
 	}
 	return result

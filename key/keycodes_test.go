@@ -8,8 +8,8 @@ import(
 	"testing"
 )
 
-func TestGetAllCodes_ReturnsKEY_CNT_Entries(t *testing.T) {
-	expected := int(KEY_CNT)
+func TestGetAllCodes_ReturnsCODE_CNT_Entries(t *testing.T) {
+	expected := int(CODE_CNT)
 	
 	keys := getAllCodes()
 
@@ -19,8 +19,8 @@ func TestGetAllCodes_ReturnsKEY_CNT_Entries(t *testing.T) {
 	}
 }
 
-func TestAllCodes_ReturnsKEY_CNT_Entries(t *testing.T) {
-	expected := int(KEY_CNT)
+func TestAllCodes_ReturnsCODE_CNT_Entries(t *testing.T) {
+	expected := int(CODE_CNT)
 	
 	keys := ALL_CODES
 

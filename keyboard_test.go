@@ -78,7 +78,7 @@ func TestNew_UinputDeviceKeyCodes_IsGivenAllCodes(t *testing.T) {
 	}
 }
 
-/*
+
 func TestGet_DefinedKey_ReturnsThatKey(t *testing.T) {
 	fake := &uinput.Fake{}
 	getUinput = fake.New
@@ -89,14 +89,14 @@ func TestGet_DefinedKey_ReturnsThatKey(t *testing.T) {
 		t.Errorf("unexpected error: %v", err)
 	}
 
-	actual := k.Get(input.KEY_C)
+	actual := k.Get(key.CODE_C)
 
 	if actual.KeyCode != 
 
 
 		kb.Press(
 }
-*/
+
 
 func TestGet_UndefinedKey_ReturnsError(t *testing.T) {
 	t.Error("todo")
