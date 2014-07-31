@@ -9,6 +9,10 @@ import (
 	"github.com/galaktor/gostwriter/uinput"
 )
 
+type Key struct {
+
+}
+
 type Keyboard struct {
 	device uinput.D
 	//	keys map[string]Key
@@ -33,6 +37,8 @@ func New(name string) (*Keyboard, error) {
 
 	return vk, nil
 }
+
+//func (k *Keyboard) Get(c key.Code) *
 
 
 

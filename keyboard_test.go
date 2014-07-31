@@ -78,8 +78,8 @@ func TestNew_UinputDeviceKeyCodes_IsGivenAllCodes(t *testing.T) {
 	}
 }
 
-
-func TestGet_DefinedKey_ReturnsThatKey(t *testing.T) {
+/*
+func TestGet_DefinedKey_ReturnsCorrectKey(t *testing.T) {
 	fake := &uinput.Fake{}
 	getUinput = fake.New
 
@@ -91,12 +91,11 @@ func TestGet_DefinedKey_ReturnsThatKey(t *testing.T) {
 
 	actual := k.Get(key.CODE_C)
 
-	if actual.KeyCode != 
-
-
-		kb.Press(
+	if actual.KeyCode != key.CODE_C {
+		
+	}
 }
-
+*/
 
 func TestGet_UndefinedKey_ReturnsError(t *testing.T) {
 	t.Error("todo")
