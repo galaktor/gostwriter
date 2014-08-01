@@ -126,11 +126,60 @@ func TestRelease_Pressed_UinputPressReturnsError_RemainsPressed(t *testing.T) {
 }
 
 func TestPress_NotPressed_SendsPressAndSyncToUinputDevice(t *testing.T) {
-	t.Error("todo")
+	ui := &uinput.Fake{}
+	pressed := false
+	synced := false
+	ui.OnPress = func(k key.Code) error { pressed = true; return nil }
+	ui.OnSync  = func() error { synced = true; return nil }
+	k := K{0, ui, NOT_PRESSED}
+
+	err := k.Press()
+
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+
+	if pressed != true {
+		t.Errorf("uinput press call did not happen")
+	}
+
+	if synced != true {
+		t.Errorf("uinput sync call did not happen")
+	}
+}
+
+func TestPress_AlreadyPressed_DoesNotSendPressToUinputDevice(t *testing.T) {
+	ui := &uinput.Fake{}
+	pressed := false
+	ui.OnPress = func(k key.Code) error { pressed = true; return nil }
+	k := K{0, ui, PRESSED}
+
+	err := k.Press()
+
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+
+	if pressed != false {
+		t.Errorf("uinput press call should not have happened")
+	}
 }
 
 func TestPress_AlreadyPressed_SendsSyncToUinputDevice(t *testing.T) {
-	t.Errorf("todo")
+	ui := &uinput.Fake{}
+	synced := false
+	ui.OnSync = func() error { synced = true; return nil }
+	k := K{0, ui, PRESSED}
+
+	err := k.Press()
+
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+
+	if synced != false {
+		t.Errorf("uinput sync call should have happened")
+	}
 }
 
 func TestRelease_NotPressed_SendsSyncToUinputDevice(t *testing.T) {
@@ -138,5 +187,9 @@ func TestRelease_NotPressed_SendsSyncToUinputDevice(t *testing.T) {
 }
 
 func TestRelease_Pressed_SendsReleaseAndSyncToUinputDevice(t *testing.T) {
+	t.Errorf("todo")
+}
+
+func TestRelease_AlreadyReleased_DoesNotSendReleaseToUinputDevice(t *testing.T) {
 	t.Errorf("todo")
 }

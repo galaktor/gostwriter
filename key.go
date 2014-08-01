@@ -58,12 +58,21 @@ func (k *K) Toggle() (result State, err error) {
 }
 
 func (k *K) Press() (err error) {
+	if k.state == PRESSED {
+		return nil
+	}
+
 	err = k.dev.Press(k.code)
 
-	if err == nil {
-		// success, update state
-		k.state = PRESSED
+	if err != nil {
+		return err
 	}
+
+	// success, update state
+	k.state = PRESSED
+
+	err = k.dev.Sync()
+
 	return err
 }
 
