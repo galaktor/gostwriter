@@ -59,30 +59,19 @@ func (k *K) Toggle() (result State, err error) {
 
 func (k *K) Press() (err error) {
 	err = k.dev.Press(k.code)
+
 	if err == nil {
 		// success, update state
 		k.state = PRESSED
 	}
+	return err
 }
 
-func (k *K) Release() error {
+func (k *K) Release() (err error) {
 	err = k.dev.Release(k.code)
 	if err == nil {
 		// success, update state
 		k.state = NOT_PRESSED
 	}
+	return err
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

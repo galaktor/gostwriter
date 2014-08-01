@@ -6,8 +6,10 @@ package gostwriter
 
 import (
 	"testing"
+	"errors"
 
 	"github.com/galaktor/gostwriter/uinput"
+	"github.com/galaktor/gostwriter/key"
 )
 
 func TestState_Pressed_ReturnsPressedState(t *testing.T) {
@@ -56,19 +58,71 @@ func TestNew_Always_SendsReleaseAndSyncToUinputDevice(t *testing.T) {
 }
 
 func TestPress_AlreadyPressed_RemainsPressed(t *testing.T) {
-	t.Error("todo")
+	expected := PRESSED
+	k := K{0, &uinput.Fake{}, PRESSED}
+
+	err := k.Press()
+
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+
+	actual := k.state
+	if actual != expected {
+		t.Errorf("expected '%v' but found '%v'", expected, actual)
+	}
 }
 
-func TestRelease_AlreadyReleased_RemainsReleased(t *testing.T) {
-	t.Error("todo")
+func TestRelease_NotPressed_RemainsNotPressed(t *testing.T) {
+	expected := NOT_PRESSED
+	k := K{0, &uinput.Fake{}, NOT_PRESSED}
+
+	err := k.Release()
+
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+
+	actual := k.state
+	if actual != expected {
+		t.Errorf("expected '%v' but found '%v'", expected, actual)
+	}
 }
 
 func TestPress_NotPressed_UinputPressReturnsError_RemainsNotPressed(t *testing.T) {
-	t.Error("todo")
+	expected := NOT_PRESSED
+	ui := &uinput.Fake{}
+	ui.OnPress = func(k key.Code) error { return errors.New("fake error") }
+	k := K{0, ui, NOT_PRESSED}
+
+	err := k.Press()
+
+	if err == nil {
+		t.Error("expected error but found nil")
+	}
+
+	actual := k.state
+	if actual != expected {
+		t.Errorf("expected '%v' but found '%v'", expected, actual)
+	}
 }
 
 func TestRelease_Pressed_UinputPressReturnsError_RemainsPressed(t *testing.T) {
-	t.Error("todo")
+	expected := PRESSED
+	ui := &uinput.Fake{}
+	ui.OnRelease = func(k key.Code) error { return errors.New("fake error") }
+	k := K{0, ui, PRESSED}
+
+	err := k.Release()
+
+	if err == nil {
+		t.Error("expected error but found nil")
+	}
+
+	actual := k.state
+	if actual != expected {
+		t.Errorf("expected '%v' but found '%v'", expected, actual)
+	}
 }
 
 func TestPress_NotPressed_SendsPressAndSyncToUinputDevice(t *testing.T) {

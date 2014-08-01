@@ -12,6 +12,10 @@ type Fake struct{
 	DevicePath string
 	DeviceName string
 	Keys []key.Code
+
+	OnPress   func(k key.Code) error
+	OnRelease func(k key.Code) error
+//	OnSync func() error
 }
 
 func (f *Fake)  New(devicePath string, deviceName string, keys ...key.Code) (D, error) {
@@ -22,10 +26,16 @@ func (f *Fake)  New(devicePath string, deviceName string, keys ...key.Code) (D, 
 }
 
 func (f *Fake) Press(k key.Code) error {
+	if f.OnPress != nil {
+		return f.OnPress(k)
+	}
 	return nil
 }
 
 func (f *Fake) Release(k key.Code) error {
+	if f.OnRelease != nil {
+		return f.OnRelease(k)
+	}
 	return nil
 }
 
