@@ -22,6 +22,17 @@ const (
 	PRESSED           = State(true)
 )
 
+func newK(c key.Code, dev uinput.D) (*K, error) {
+	k := &K{c, dev, PRESSED} // assume PRESSED before reset...
+	err := k.Release()       // ...force release to reset into known state
+
+	if err != nil {
+		return nil, err
+	}
+
+	return k, nil
+}
+
 /* press the key then release it in sequence */
 func (k *K) Push() error {
 	err := k.Press()
@@ -59,6 +70,7 @@ func (k *K) Toggle() (result State, err error) {
 
 func (k *K) Press() (err error) {
 	if k.state == PRESSED {
+		k.dev.Sync()
 		return nil
 	}
 
@@ -77,10 +89,21 @@ func (k *K) Press() (err error) {
 }
 
 func (k *K) Release() (err error) {
-	err = k.dev.Release(k.code)
-	if err == nil {
-		// success, update state
-		k.state = NOT_PRESSED
+	if k.state == NOT_PRESSED {
+		k.dev.Sync()
+		return nil
 	}
+
+	err = k.dev.Release(k.code)
+
+	if err != nil {
+		return err
+	}
+
+	// success, update state
+	k.state = NOT_PRESSED
+
+	err = k.dev.Sync()
+
 	return err
 }
