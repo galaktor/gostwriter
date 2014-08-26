@@ -33,6 +33,10 @@ func newK(c key.Code, dev uinput.D) (*K, error) {
 	return k, nil
 }
 
+func (k *K) Code() key.Code {
+	return k.code
+}
+
 /* press the key then release it in sequence */
 func (k *K) Push() error {
 	err := k.Press()
