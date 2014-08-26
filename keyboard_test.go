@@ -78,24 +78,54 @@ func TestNew_UinputDeviceKeyCodes_IsGivenAllCodes(t *testing.T) {
 	}
 }
 
-/*
 func TestGet_DefinedKey_ReturnsCorrectKey(t *testing.T) {
 	fake := &uinput.Fake{}
 	getUinput = fake.New
 
-	k, err := New("")
+	kb, err := New("")
 
 	if err != nil {
-		t.Errorf("unexpected error: %v", err)
+		t.Errorf("unexpected error in New(): %v", err)
 	}
 
-	actual := k.Get(key.CODE_C)
+	k, err := kb.Get(key.CODE_C)
 
-	if actual.KeyCode != key.CODE_C {
-		
+	if err != nil {
+		t.Errorf("unexpected error in Get(): %v", err)
+	}
+
+	actual := k.Code()
+	if actual != key.CODE_C {
+		t.Errorf("expected key code '%v' but found '%v'", key.CODE_C, actual)
 	}
 }
-*/
+
+func TestGet_DefinedKey_CalledTwice_ReturnsSameInstance(t *testing.T) {
+	fake := &uinput.Fake{}
+	getUinput = fake.New
+
+	kb, err := New("")
+
+	if err != nil {
+		t.Errorf("unexpected error in New(): %v", err)
+	}
+
+	one, err := kb.Get(key.CODE_C)
+
+	if err != nil {
+		t.Errorf("unexpected error in Get(): %v", err)
+	}
+
+	two, err := kb.Get(key.CODE_C)
+
+	if err != nil {
+		t.Errorf("unexpected error in Get(): %v", err)
+	}
+
+	if one != two {
+		t.Errorf("expected same as '%x' but found different instance '%x'", one, two)
+	}
+}
 
 func TestGet_UndefinedKey_ReturnsError(t *testing.T) {
 	t.Error("todo")

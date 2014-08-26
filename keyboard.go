@@ -9,13 +9,9 @@ import (
 	"github.com/galaktor/gostwriter/uinput"
 )
 
-type Key struct {
-
-}
-
 type Keyboard struct {
 	device uinput.D
-	//	keys map[string]Key
+	keys map[key.Code]*K
 }
 
 /* replace this in tests to inject fake UinputDevice */
@@ -34,11 +30,36 @@ func New(name string) (*Keyboard, error) {
 
 	vk := &Keyboard{}
 	vk.device = dev
+	vk.keys = make(map[key.Code]*K)
 
 	return vk, nil
 }
 
-//func (k *Keyboard) Get(c key.Code) *
+func (kb *Keyboard) Get(c key.Code) (*K, error) {
+	if k, ok := kb.keys[c]; ok {
+		return k, nil
+	} else {
+		k, err := newK(c, kb.device)
+
+		if err != nil {
+			return nil, err
+		}
+
+		kb.keys[c] = k
+		return k, nil
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
