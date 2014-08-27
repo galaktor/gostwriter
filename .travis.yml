@@ -12,11 +12,11 @@ install:
   - go get -d -v ./...
   
 script:
-  - cd input
+  - cd key
   - ./get_keycodes.sh /usr/include/linux/input.h
   - echo "using keycodes:" && cat keycodes.go | grep CODE_
+  - go test -v
   - cd ../uinput && go build && go test -c
-  - cd ../key && go test -v
   - cd ..
   - go build
   - go test -v
