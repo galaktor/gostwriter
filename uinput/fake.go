@@ -16,6 +16,7 @@ type Fake struct{
 	OnPress   func(k key.Code) error
 	OnRelease func(k key.Code) error
 	OnSync    func() error
+	OnDestroy func() error
 }
 
 func (f *Fake)  New(devicePath string, deviceName string, keys ...key.Code) (D, error) {
@@ -47,6 +48,9 @@ func (f *Fake) Sync() error {
 }
 
 func (f *Fake) Destroy() error {
+	if f.OnDestroy != nil {
+		return f.OnDestroy()
+	}
 	return nil
 }
 

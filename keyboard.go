@@ -35,6 +35,11 @@ func New(name string) (*Keyboard, error) {
 	return vk, nil
 }
 
+func (kb *Keyboard) Destroy() error {
+	return kb.device.Destroy()
+	return nil
+}
+
 func (kb *Keyboard) Get(c key.Code) (*K, error) {
 	if k, ok := kb.keys[c]; ok {
 		return k, nil

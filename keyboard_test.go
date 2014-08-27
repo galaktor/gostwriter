@@ -6,6 +6,7 @@ package gostwriter
 
 import(
 	"testing"
+	"errors"
 
 	"github.com/galaktor/gostwriter/key"
 	"github.com/galaktor/gostwriter/uinput"
@@ -127,14 +128,43 @@ func TestGet_DefinedKey_CalledTwice_ReturnsSameInstance(t *testing.T) {
 	}
 }
 
-func TestGet_UndefinedKey_ReturnsError(t *testing.T) {
-	t.Error("todo")
-}
-
 func TestDestroy_Always_DestroysUinputDevice(t *testing.T) {
-	t.Error("todo")
+	fake := &uinput.Fake{}
+	getUinput = fake.New
+	destroyed := false
+	fake.OnDestroy = func() error { destroyed = true; return nil; }
+
+	kb, err := New("")
+
+	if err != nil {
+		t.Errorf("unexpected error in New(): %v", err)
+	}
+
+	err = kb.Destroy()
+
+	if destroyed != true {
+		t.Errorf("expected call to Destroy() but found none")
+	}
 }
 
+func TestDestroy_UinputDestroyReturnsError_ReturnsThatError(t *testing.T) {
+	fake := &uinput.Fake{}
+	getUinput = fake.New
+	expected := errors.New("fake error")
+	fake.OnDestroy = func() error { return expected; }
+
+	kb, err := New("")
+
+	if err != nil {
+		t.Errorf("unexpected error in New(): %v", err)
+	}
+
+	actual := kb.Destroy()
+
+	if actual != expected {
+		t.Errorf("expected '%v' but found '%v'", expected, actual)
+	}
+}
 
 func AreEqual(a, b []key.Code) bool {
 	if len(a) != len(b) {
@@ -149,12 +179,3 @@ func AreEqual(a, b []key.Code) bool {
 
     return true
 }
-
-
-
-
-
-
-
-
-
