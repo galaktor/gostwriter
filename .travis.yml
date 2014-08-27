@@ -14,7 +14,7 @@ install:
 script:
   - cd key
   - ./get_keycodes.sh /usr/include/linux/input.h
-  - echo "using keycodes:" && cat keycodes.go | grep CODE_
+  - echo "using keycodes:" && cat codes.go | grep CODE_
   - go test -v
   - cd ../uinput && go build && go test -c
   - cd ..
