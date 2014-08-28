@@ -1,22 +1,50 @@
-/*  Copyright 2014, Raphael Estrada
-    Author email:  <galaktor@gmx.de>
-    Project home:  <https://github.com/galaktor/gostwriter>
-    Licensed under The GPL v3 License (see README and LICENSE files) */
+//    Copyright 2014, Raphael Estrada
+//    Author email:  <galaktor@gmx.de>
+//    Project home:  <https://github.com/galaktor/gostwriter>
+//    Licensed under The GPL v3 License (see README and LICENSE files)
 package key
+
+// contains key codes for use with uinput and gostwriter virtual keyboard
+// 'codes.go' is intended to be generated based on 'codes.template'
+// you typically should not be editing 'codes.go' but the template instead
+// the constants below are directly mapped to the key codes supported by
+// the linux kernel version and it's implementation of uinput
+// use provided scripts to auto-generate codes for your kernel.
+// [https://github.com/galaktor/gostwriter/blob/master/key/get_keycodes.sh]
 
 /*
   #include <linux/input.h>
 */
 import "C"
 
+// a more readable and slightly more typesafe way to pass around key codes
 type Code C.__u16
 
+// all key codes that can be used with uinput and therefore gostwriter
+// on the kernel that will run it. for readability, these were put into
+// the 'key' package and are prefixed with 'CODE_', so they can be used
+// like:
+//    key.CODE_X
 const (
       /*KEYCODES*/
 )
 
+// a map of all key codes for dynamic access to the
+// generated codes. used to register subsets or all
+// keys with uinput.
 var ALL_CODES [CODE_CNT]Code = getAllCodes()
 
+// using the linux 'input.h' key code constant 'KEY_CNT'
+// which in gostwriter is represented by 'CODE_CNT'
+// (note the different prefix), will iterate over all
+// numerical key codes up to that limit and map them in
+// 'ALL_CODES'. note that this is merely an approximation,
+// and if there are gaps in the actual linux kernel key
+// codes, then those gaps will not be jumped in the result
+// of this function. plainly speaking, you could have key
+// codes in here which don't really exist inside the kernel.
+// from experience, this is unlikely to happen, so it's
+// been a good heuristic so far :-)
 func getAllCodes() [CODE_CNT]Code {
 	result := [CODE_CNT]Code{}
 	for i := 0; i < int(CODE_CNT); i++ {
