@@ -22,7 +22,7 @@ type Code C.__u16
 
 // all key codes that can be used with uinput and therefore gostwriter
 // on the kernel that will run it. for readability, these were put into
-// the 'key# package and are prefixed with 'CODE_', so they can be used
+// the 'key' package and are prefixed with 'CODE_', so they can be used
 // like:
 //    key.CODE_X
 const (
