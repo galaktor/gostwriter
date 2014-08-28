@@ -1,4 +1,10 @@
+//    Copyright 2014, Raphael Estrada
+//    Author email:  <galaktor@gmx.de>
+//    Project home:  <https://github.com/galaktor/gostwriter>
+//    Licensed under The GPL v3 License (see README and LICENSE files)
 package main
+
+// a simple demo tool showing how gostwriter can be used
 
 import (
 	"log"
@@ -8,6 +14,9 @@ import (
 	"github.com/galaktor/gostwriter/key"
 )
 
+// uses the 't', 'e' and 's' keys to write 'test' to the
+// console ten times. then it uses the 'ctrl' and 'c' keys
+// to kill itself by emulating a 'CTRL+C' command
 func main() {
 	kb, err := gostwriter.New("foo")
 
@@ -47,34 +56,25 @@ func main() {
 	kb.Destroy()
 }
 
-/* presses and subsequently releases a key */
+// presses and subsequently releases a key
 func push(k *gostwriter.K) {
 	err := k.Push(); guard(err);
 }
 
-/* presses a key, if not already pressed. does not release! */
+// presses a key, if not already pressed. does not release
 func press(k *gostwriter.K) {
 	err := k.Press(); guard(err);
 }
 
-/* releases a key, if not aready released. */
+// releases a key, if not aready released.
 func release(k *gostwriter.K) {
 	err := k.Release(); guard(err);
 }
 
+// contains boilerplate error check. if error is present,
+// prints it then exits the app
 func guard(e error) {
 	if e != nil {
 		log.Fatal(e)
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
