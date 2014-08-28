@@ -45,5 +45,10 @@ I recommend to do this for a simple and quick way to have good key codes, which 
     $gostwriter>       go build
     $gostwriter/build> go install github.com/galaktor/gostwriter
 
+#Documentation
+The source code and it's comments should be more than enough to get what's going on within. Also, it renders reasonably well in [GoDoc](http://godoc.org/github.com/galaktor/gostwriter):
+
+http://godoc.org/github.com/galaktor/gostwriter
+
 #Copyright
 Licensed under the GPL v3. See LICENSE and COPYRIGHT files.
