@@ -50,7 +50,6 @@ func main() {
 			press(ctrl)
 			press(c)
 		}
-
 	}
 
 	kb.Destroy()
