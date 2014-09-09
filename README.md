@@ -1,5 +1,5 @@
-#Travis build status
-[![Build Status](https://travis-ci.org/galaktor/gostwriter.svg)](https://travis-ci.org/galaktor/gostwriter)
+[![Travis](https://travis-ci.org/galaktor/gostwriter.svg)](https://travis-ci.org/galaktor/gostwriter)
+[![GoDoc](https://godoc.org/github.com/galaktor/gostwriter?status.png)](https://godoc.org/github.com/galaktor/gostwriter)
 
 #What is it?
 It's a simple virtual keyboard for Go that uses /dev/uinput to inject key events, as if from a real keyboard.
