@@ -49,12 +49,16 @@ func main() {
 		log.Fatalf("%v\n%v", err, "Can't find codes.template (are you in the right directory?)")
 	}
 	var codes = []string{}
-	keyDefine := regexp.MustCompile(`^\s*#\s*define\s+((KEY_)(\S*))\s+(\S+)`)
+	keyDefine := regexp.MustCompile(`^\s*#\s*define\s+((KEY_|BTN_)(\S*))\s+(\S+)`)
 	for _,line := range strings.Split(string(inputHeader), "\n") {
 		keyMatch := keyDefine.FindStringSubmatch(line)
 		if keyMatch != nil {
 			defineName := keyMatch[1]
+			prefix := keyMatch[2]
 			name := keyMatch[3]
+			if prefix == "BTN_" {
+				name = defineName
+			}
 			// value can be the name of another #define,
 			// not just a numeric literal
 			value := keyMatch[4]
