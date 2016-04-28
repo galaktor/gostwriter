@@ -1,4 +1,4 @@
-// To run: `go run get_keycodes.go`
+// To run: in key/, ./get_keycodes.sh
 
 //  Copyright 2014 Raphael Estrada, 2016 Isaac Dupree
 //  Author email:  <galaktor@gmx.de>
