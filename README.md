@@ -1,21 +1,26 @@
 [![Travis](https://travis-ci.org/galaktor/gostwriter.svg)](https://travis-ci.org/galaktor/gostwriter)
 [![GoDoc](https://godoc.org/github.com/galaktor/gostwriter?status.png)](https://godoc.org/github.com/galaktor/gostwriter)
 
-#What is it?
+## What is it?
+
 It's a simple virtual keyboard for Go that uses /dev/uinput to inject key events, as if from a real keyboard.
 
-##Why?
+### Why?
+
 To programatically emulate user keystrokes, i.e. an emulated gamepad or other device that can map to keyboard inputs.
 
-##Limitations
+### Limitations
+
 It currently only does keyboard events, and only the ones I needed so far. Can be extended in the scope of uinput, i.e. mouse events, but I didn't do that yet. Feel free to fork!
 
-#Installation
+## Installation
+
 Do the usual go get:
 
     $> go get github.com/galaktor/gostwriter
 
-##Key codes
+### Key codes
+
 Since gostwriter uses uinput, you might have to regenerate the key codes it uses to match the kernel you are running on. The key codes are defined as constants in "key/codes.go", and are basically just integers which are sent to the kernel to tell it what key was pressed.
 
 As keys are added and moved around between kernels, you might want to either add or remove keys to the codes.go file to suit your purposes. gostwriter comes with a handy script to auto-generate a complete set of keycodes from any given "linux/input.h" kernel header file.
@@ -45,18 +50,20 @@ I recommend to do this for a simple and quick way to have good key codes, which 
     $gostwriter>       go build
     $gostwriter/build> go install github.com/galaktor/gostwriter
 
-#Documentation
-The source code and it's comments should be more than enough to get what's going on within. 
+## Documentation
 
-## godoc
+The source code and it's comments should be more than enough to get what's going on within.
+
+### godoc
+
 It renders reasonably well in [GoDoc](http://godoc.org/github.com/galaktor/gostwriter):
 
 http://godoc.org/github.com/galaktor/gostwriter
 
-## examples
+### examples
+
 I put a little demo together, it's very straight-forward. Find it at "demo/demo.go".
 
+## Copyright
 
-
-#Copyright
 Licensed under the GPL v3. See LICENSE and COPYRIGHT files.
